@@ -14,12 +14,14 @@
   int currentJumpCount = 0;
  // score
   int score = 0;
- // main menu
-  boolean isOnMianPage = true;
  
  //Game over? game win??
   boolean isGameWin = false;
   boolean isGameOver = false;
+  
+  // obstacles
+  ArrayList<Obstacle> obstacles = new ArrayList< Obstacle> ();
+  float obstacleSpeed = 5;
   
   //character
   character characterBai;
@@ -29,13 +31,14 @@ void setup() {
   size(680, 500); //initial canvas size set to 680, 500
   
   //load image
-  Background = loadImage ("backgroun.png");
+  Background = loadImage ("background.png");
   character = loadImage("Character.png");
   mainMenu = loadImage ("Main menu.png");
   obstacleA = loadImage("ob1.png");
   
   characterBai = new character(100, 350, 0, -15, 0, 1);
   
+  resetGame();
 }
 
 void draw() {
@@ -50,7 +53,7 @@ void draw() {
   
   fill (255);
   textSize (50);
-  text ("START", width / 2, height / 2 );
+  text ("START", 270, 290);
   } else {
     image( Background, 0, 0, width, height);
   }
@@ -88,22 +91,59 @@ void draw() {
   textSize (17);
   text(" Press O to try again", width / 2, height / 2 + 45);
  }
+ image (character, characterBai.position.x, characterBai.position.y);
+ 
  characterBai.update();
 }
  
+
+ 
+ // key press
+ void keyPressed(){
+  if (key == 'o' && (isGameWin || isGameOver)){
+     resetGame();
+   }
+ }
+ 
+// mouse press
+void mousePressed() {
+  if (isOnMainPage && mouseX > width / 2 - 75 && mouseX < width / 2 + 75 && mouseY > height / 2 && mouseY < height / 2 + 50){
+    isOnMainPage = false;
+  }
+}
  // Reset the game
  void resetGame(){
    isGameWin = false;
    isGameOver = false;
    characterBai.velocity.y = 0;
    currentJumpCount = 0;
+   obstacleSpeed = 5;
    score = 0;
- }
- 
- // key press
- void keyPressed(){
-
-   if (key == 'o' && (isGameWin || isGameOver)){
-     resetGame();
+   
+   //obstacle uodate
+   obstacles.clear();
+   for (int i = 0; i < 3; i++) {
+     obstacles.add(new Obstacle(new PVector(width + i * 200, groundY - random(30, 80) + 100), random(20, 50), random(30, 80)));
    }
  }
+   //update obstacle
+   void updateObstacles() {
+     for (int i = obstacles.size() - 1; i >= 0; i--) {
+       Obstacle obs = obstacles. get(i);
+       obs. update();
+      if (characterBai.position.x + 30 > obs. position.x 
+      && characterBai.position.x < obs. position.x + obs. width && 
+      characterBai.position.y + 30 > obs. position.y &&
+      characterBai.position.y < obs. position.y + obs. height) {
+        isGameOver = true;
+      }
+     if (obs.position.x + obs. width <0) {
+       obstacles. remove(i);
+       score ++;
+     }
+    }
+    if (obstacles.size() < 3) {
+      obstacles.add(new Obstacle(new PVector(width + random(100, 300), groundY - random(30, 80) + 100), random(20, 50), random(30, 80)));
+    }
+   }
+       
