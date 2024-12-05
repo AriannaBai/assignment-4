@@ -1,8 +1,28 @@
+ // images i need
   PImage Background;
   PImage character;
   PImage mainMenu;
   PImage obstacleA;
   boolean isOnMainPage = true;
+  
+
+ // ground and jump
+  float groundY = 350;
+  float gravity = 1;
+  float jumpPower = -15;
+  int maxJumpCount = 2;
+  int currentJumpCount = 0;
+ // score
+  int score = 0;
+ // main menu
+  boolean isOnMianPage = true;
+ 
+ //Game over? game win??
+  boolean isGameWin = false;
+  boolean isGameOver = false;
+  
+  //character
+  character characterBai;
   
 //---------------------basic-------------------------------
 void setup() {
@@ -13,6 +33,9 @@ void setup() {
   character = loadImage("Character.png");
   mainMenu = loadImage ("Main menu.png");
   obstacleA = loadImage("ob1.png");
+  
+  characterBai = new character(100, 350, 0, -15, 0, 1);
+  
 }
 
 void draw() {
@@ -27,7 +50,7 @@ void draw() {
   
   fill (255);
   textSize (50);
-  text ("START", width / 2, height / 2 + 25);
+  text ("START", width / 2, height / 2 );
   } else {
     image( Background, 0, 0, width, height);
   }
@@ -35,7 +58,7 @@ void draw() {
   // text 
     fill (255);
     textSize (20);
-    text ("SCORE:" + score, 350, 20);
+    text ("SCORE:" + score, 450, 20);
     
  // HOW CAN LET THE GAME WIN??
  if (score >= 30) {
@@ -65,13 +88,22 @@ void draw() {
   textSize (17);
   text(" Press O to try again", width / 2, height / 2 + 45);
  }
+ characterBai.update();
+}
  
  // Reset the game
- void resetGame() {
+ void resetGame(){
    isGameWin = false;
    isGameOver = false;
-   characterPosition. set(100, groundY - 30 + 100);
-   velocityY = 0;
+   characterBai.velocity.y = 0;
    currentJumpCount = 0;
    score = 0;
+ }
+ 
+ // key press
+ void keyPressed(){
+
+   if (key == 'o' && (isGameWin || isGameOver)){
+     resetGame();
+   }
  }
