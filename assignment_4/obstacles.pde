@@ -1,6 +1,7 @@
 class Obstacle {
   PVector position;
   float width, height;
+  float obstacleSpeed = 5; 
   boolean passed = false; // mark the ibstacle pss or not
   
   Obstacle(PVector pos, float w, float h){
