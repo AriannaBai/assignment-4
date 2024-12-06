@@ -1,12 +1,18 @@
 class Obstacle {
   PVector position;
   float width, height;
-  boolean passed = false; 
-  Obstacle(PVector position, float width, float height){
+  boolean passed = false; // mark the ibstacle pss or not
+  
+  Obstacle(PVector pos, float w, float h){
+  position = pos;
+  width = w;
+  height = h;
   }
   
   void update(){
     position.x -= obstacleSpeed;
-    image(obstacleA, position.x, position.y, width, height);
+     }
+ void display( PImage obstacleA) {
+   image( obstacleA, position.x, position.y, width, height);
   }
 }
