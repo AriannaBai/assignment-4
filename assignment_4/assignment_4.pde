@@ -99,7 +99,7 @@ void draw() {
     textSize (35);
     text(" OOPS--YOU LOSE THE GAME", width / 2, height / 2);
     textSize (17);
-    text(" Press O to try again", width / 2, height / 2 + 45);
+    text(" Press R to try again", width / 2, height / 2 + 45);
   }
 }
 
@@ -111,7 +111,7 @@ void keyPressed() {
   characterBai.characterControl(key, true);
 }
 void keyReleased() {
-  if (key == '0' && (isGameOver || isGameWin)) {
+  if (key == 'r' && (isGameOver || isGameWin)) {
     resetGame();
   }
 }
